@@ -39,15 +39,16 @@ Currently, the following Minecraft versions are actively supported with new feat
 | 1.19.4            | ✔️ Long Term Support               |
 | 1.20.1            | ✔️ Long Term Support               |
 | 1.20.6            | ✔️ Long Term Support               |
-| 1.21.1, 1.21.4    | 🕒 When Minecraft 1.22 is released |
-| 1.21.5, 1.21.6    | 🕒 To be determined                |
+| 1.21.1, 1.21.4-5  | 🕒 When Minecraft 1.22 is released |
+| 1.21.6-7          | 🕒 To be determined                |
 
 ### End-of-life versions
 
 The following Minecraft versions are out of the support range. There's no support for these Minecraft versions, unless some critical bugs occur
 
-| Minecraft Version | Last Version | Release Date |
-|-------------------|--------------|--------------|
+| Minecraft Version | Last Version                                                                      | Release Date |
+|-------------------|-----------------------------------------------------------------------------------|--------------|
+| 1.19.2            | [v0.3.1](https://github.com/AyakaCraft/Carpet-Ayaka-Addition/releases/tag/v0.3.1) | Mar 2, 2025  |
 
 ### Scheduled to be supported versions
 
