@@ -228,7 +228,7 @@ license {
     }
     ext {
         name = project.mod_name
-        author = "Calboot"
+        author = "YourName"
         year = Calendar.getInstance().get(Calendar.YEAR).toString()
     }
 }
