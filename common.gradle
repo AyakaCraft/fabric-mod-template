@@ -6,6 +6,7 @@ apply plugin: "com.replaymod.preprocess"
 apply plugin: "com.hypherionmc.modutils.modpublisher"
 apply plugin: "com.github.hierynomus.license"
 apply plugin: "maven-publish"
+apply plugin: "me.fallenbreath.yamlang"
 
 Map<String, ?> properties = project.getProperties()
 
@@ -51,8 +52,6 @@ repositories {
 // https://github.com/FabricMC/fabric-loader/issues/783
 configurations {
     modRuntimeOnly.exclude(group: "net.fabricmc", module: "fabric-loader")
-    modCompileOnly.exclude(group: "com.github.2No2Name", module: "McTester")
-    modImplementation.exclude(group: "com.github.2No2Name", module: "McTester")
 }
 
 dependencies {
@@ -73,6 +72,7 @@ dependencies {
 }
 
 var MIXIN_CONFIG_PATH = "modid.mixins.json"
+var LANG_DIR = "assets/modid/lang"
 var JAVA_COMPATIBILITY
 if (mcVersion >= 12005) {
     JAVA_COMPATIBILITY = JavaVersion.VERSION_21
@@ -106,6 +106,16 @@ loom {
             ideConfigGenerated false
         }
     }
+}
+
+preprocess {
+    patternAnnotation.set("com.yourgroup.modid.utils.preprocess.PreprocessPattern")
+}
+
+// https://github.com/Fallen-Breath/yamlang
+yamlang {
+    targetSourceSets = [sourceSets.main]
+    inputDir = LANG_DIR
 }
 
 shadowJar {
