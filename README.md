@@ -48,7 +48,6 @@ The following Minecraft versions are out of the support range. There's no suppor
 
 | Minecraft Version | Last Version                                                                      | Release Date |
 |-------------------|-----------------------------------------------------------------------------------|--------------|
-| 1.19.2            | [v0.3.1](https://github.com/AyakaCraft/Carpet-Ayaka-Addition/releases/tag/v0.3.1) | Mar 2, 2025  |
 
 ### Scheduled to be supported versions
 
