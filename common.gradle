@@ -62,7 +62,7 @@ dependencies {
 
     // fabric
     modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
-    // modImplementation("net.fabricmc:fabric-api:fabric-api:${project.fabric_api_version}")
+    // modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}")
 
     if (!releasing) {
         // Runtime only mods here
