@@ -125,7 +125,7 @@ shadowJar {
 }
 
 tasks.withType(ShadowJar).configureEach {
-    enableRelocation = true
+    enableAutoRelocation = true
     relocationPrefix = "modid.libs"
 }
 
