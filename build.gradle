@@ -18,6 +18,7 @@ plugins {
     id("com.hypherionmc.modutils.modpublisher") version("2.1.8") apply(false)
 
     id("maven-publish")
+    id("idea")
 }
 
 version = project.mod_version
