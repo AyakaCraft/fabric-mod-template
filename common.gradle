@@ -19,6 +19,9 @@ repositories {
     maven {
         name = "Fabric"
         url = "https://maven.fabricmc.net/"
+        content {
+            includeGroup "net.fabricmc"
+        }
     }
     maven {
         name = "masa"
@@ -27,10 +30,16 @@ repositories {
     maven {
         name = "Fallen"
         url = "https://maven.fallenbreath.me/releases"  // Fallen orz
+        content {
+            includeGroup "me.fallenbreath"
+        }
     }
     maven {
         name = "Modrinth"
         url = "https://api.modrinth.com/maven"
+        content {
+            includeGroup "maven.modrinth"
+        }
     }
     maven {
         name = "CurseMaven"
@@ -253,6 +262,8 @@ license {
 tasks.classes.dependsOn(tasks.licenseFormatMain)
 tasks.testClasses.dependsOn(tasks.licenseFormatTest)
 
+String[] minecraftVersions = String.valueOf(properties.game_versions).split("\n")
+
 // https://github.com/firstdarkdev/modpublisher
 publisher {
 
@@ -275,7 +286,7 @@ publisher {
     setChangelog(rootProject.file("changelog.md"))
 
     setProjectVersion(fullProjectVersion)
-    setGameVersions([project.minecraft_dependency])
+    setGameVersions(minecraftVersions)
     setLoaders("fabric")
     setCurseEnvironment("both") // or "server", "client"
 
