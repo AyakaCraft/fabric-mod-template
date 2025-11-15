@@ -100,7 +100,7 @@ dependencies {
 
     // fabric
     modImplementation("net.fabricmc:fabric-loader:${properties["loader_version"]}")
-    // modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}")
+    // modImplementation("net.fabricmc.fabric-api:fabric-api:${properties["fabric_api_version"]}")
 
     if (!ci) {
         // Runtime only mods here
@@ -112,20 +112,21 @@ dependencies {
 
 val mixinConfigPath = "modid.mixins.json"
 val langDir = "assets/modid/lang"
-var javaCompatibility = JavaVersion.VERSION_1_8
-if (mcVersionNumber >= 12005) {
-    javaCompatibility = JavaVersion.VERSION_21
+val javaCompatibility = if (mcVersionNumber >= 12005) {
+    JavaVersion.VERSION_21
 } else if (mcVersionNumber >= 11800) {
-    javaCompatibility = JavaVersion.VERSION_17
+    JavaVersion.VERSION_17
 } else if (mcVersionNumber >= 11700) {
-    javaCompatibility = JavaVersion.VERSION_16
+    JavaVersion.VERSION_16
+} else {
+    JavaVersion.VERSION_1_8
 }
 val mixinCompatibility = javaCompatibility
 
 loom {
     var commonVmArgs = listOf("-Dmixin.debug.export=true")
     runConfigs.configureEach {
-        runDir = "../../run"
+        runDir = "../../run/${mcVersionNumber}"
         vmArgs(commonVmArgs)
         ideConfigGenerated(true)
     }
@@ -271,7 +272,7 @@ license {
         HeaderDefinitionBuilder("SLASHSTAR_STYLE_NEWLINE")
             .withFirstLine("/*")
             .withBeforeEachLine(" * ")
-            .withEndLine(" */" + System.lineSeparator())
+            .withEndLine(" */\n")
             .withFirstLineDetectionDetectionPattern("(\\s|\\t)*/\\*.*$")
             .withLastLineDetectionDetectionPattern(".*\\*/(\\s|\\t)*$")
             .withNoBlankLines()
@@ -280,7 +281,7 @@ license {
     )
     mapping("java", "SLASHSTAR_STYLE_NEWLINE")
     ext {
-        set("name", properties["mod_name"])
+        set("name", properties["mod_name"].toString())
         set("author", "YourName")
         set("year", Calendar.getInstance().get(Calendar.YEAR).toString())
     }
@@ -288,7 +289,7 @@ license {
 tasks["classes"].dependsOn(tasks.licenseFormatMain)
 tasks["testClasses"].dependsOn(tasks.licenseFormatTest)
 
-val minecraftVersions = properties["game_versions"].toString().split("\n")
+val gameVersions = properties["game_versions"].toString().split("\n")
 
 // https://github.com/firstdarkdev/modpublisher
 publisher {
@@ -299,7 +300,7 @@ publisher {
         github(System.getenv("GITHUB_TOKEN") ?: "unset")
     }
 
-    // setDebug(true)
+    // debug = true
 
     if (properties["curseforge_id"] != null) {
         curseID.set(properties["curseforge_id"].toString())
@@ -312,11 +313,11 @@ publisher {
     changelog.set(rootProject.file("changelog.md"))
 
     projectVersion.set(fullProjectVersion)
-    gameVersions.set(minecraftVersions)
+    this.gameVersions.set(gameVersions)
     setLoaders("fabric")
     setCurseEnvironment("both") // or "server", "client"
 
-    getArtifact().set(tasks.remapJar)
+    artifact.set(tasks.remapJar)
 
     if (mcVersionNumber < 11700) {
         setJavaVersions(JavaVersion.VERSION_1_8)
