@@ -46,8 +46,8 @@ Currently, the following Minecraft versions are actively supported with new feat
 
 The following Minecraft versions are out of the support range. There's no support for these Minecraft versions, unless some critical bugs occur
 
-| Minecraft Version | Last Version                                                                      | Release Date |
-|-------------------|-----------------------------------------------------------------------------------|--------------|
+| Minecraft Version | Last Version | Release Date |
+|-------------------|--------------|--------------|
 
 ### Scheduled to be supported versions
 
