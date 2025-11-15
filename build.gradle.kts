@@ -61,7 +61,7 @@ preprocess {
     mc12108.link(mc12110, file("versions/mapping_12108_12110.txt"))
 }
 
-fun buildLibs(p: Project): Directory {
+fun libsDir(p: Project): Directory {
     return p.layout.buildDirectory.dir("libs").get()
 }
 
@@ -72,16 +72,16 @@ tasks.register("buildAndGather") {
     doLast {
         println("Gathering builds")
 
-        delete(fileTree(buildLibs(rootProject)) { include("*") })
+        delete(fileTree(libsDir(rootProject)) { include("*") })
         subprojects {
             print("Copying files for ${name}...    ")
-            val d = buildLibs(this)
+            val currentLibsDir = libsDir(this)
             copy {
-                from(d) {
+                from(currentLibsDir) {
                     include("*.jar")
                     exclude("*-dev.jar", "*-sources.jar", "*-shadow.jar")
                 }
-                into(buildLibs(rootProject))
+                into(libsDir(rootProject))
                 duplicatesStrategy = DuplicatesStrategy.INCLUDE
             }
             println("Succeeded")
@@ -131,7 +131,7 @@ tasks.register("sendDiscord") {
             }
             val msg = msgBuilder.toString().replace("\n", "\\n")
             println("Sending json content to ${webhook}...")
-            val content = "{\"content\" : \"$msg\"}"
+            val content = "{\"content\" : \"${msg}\"}"
             println(content)
 
             val connection = uri(webhook).toURL().openConnection() as HttpURLConnection

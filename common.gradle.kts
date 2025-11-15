@@ -79,7 +79,7 @@ repositories {
 
 idea {
     module {
-        if (releasing) {
+        if (!ci) {
             isDownloadSources = true
             isDownloadJavadoc = true
         }
