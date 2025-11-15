@@ -1,6 +1,6 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import nl.javadude.gradle.plugins.license.header.HeaderDefinitionBuilder
-import java.util.*
+import java.util.Calendar
 
 plugins {
     id("fabric-loom") version ("1.13-SNAPSHOT")
