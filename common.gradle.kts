@@ -27,7 +27,7 @@ plugins {
 
 val properties = project.properties
 
-val mcVersionNumber = properties["mcVersion"] as Integer
+val mcVersionNumber = properties["mcVersion"] as Int
 val minecraftVersion = properties["minecraft_version"].toString()
 
 val jitpack = System.getenv("JITPACK") == "true"
