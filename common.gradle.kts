@@ -147,13 +147,13 @@ loom {
 }
 
 preprocess {
-    patternAnnotation.set("com.yourgroup.modid.utils.preprocess.PreprocessPattern")
+    patternAnnotation = "com.yourgroup.modid.utils.preprocess.PreprocessPattern"
 }
 
 // https://github.com/Fallen-Breath/yamlang
 yamlang {
-    targetSourceSets.set(listOf(sourceSets["main"]))
-    inputDir.set(langDir)
+    targetSourceSets = listOf(sourceSets["main"])
+    inputDir = langDir
 }
 
 tasks.shadowJar {
@@ -170,7 +170,7 @@ tasks.withType<ShadowJar>().configureEach {
 tasks.remapJar {
     dependsOn(tasks.shadowJar)
     mustRunAfter(tasks.shadowJar)
-    inputFile.set(tasks.shadowJar.get().archiveFile)
+    inputFile = tasks.shadowJar.get().archiveFile
 }
 
 val modVersion = properties["mod_version"].toString()
@@ -289,7 +289,7 @@ license {
 tasks["classes"].dependsOn(tasks.licenseFormatMain)
 tasks["testClasses"].dependsOn(tasks.licenseFormatTest)
 
-val gameVersions = properties["game_versions"].toString().split("\n")
+val minecraftVersions = properties["game_versions"].toString().split("\n")
 
 // https://github.com/firstdarkdev/modpublisher
 publisher {
@@ -303,19 +303,19 @@ publisher {
     // debug = true
 
     if (properties["curseforge_id"] != null) {
-        curseID.set(properties["curseforge_id"].toString())
+        curseID = properties["curseforge_id"].toString()
     }
     if (properties["modrinth_id"] != null) {
-        modrinthID.set(properties["modrinth_id"].toString())
+        modrinthID = properties["modrinth_id"].toString()
     }
 
-    versionType.set(properties["mod_version_type"].toString()) // "alpha", "beta", "release"
-    changelog.set(rootProject.file("changelog.md"))
+    versionType = properties["mod_version_type"].toString() // "alpha", "beta", "release"
+    changelog = rootProject.file("changelog.md")
 
-    projectVersion.set(fullProjectVersion)
-    this.gameVersions.set(gameVersions)
-    setLoaders("fabric")
-    setCurseEnvironment("both") // or "server", "client"
+    projectVersion = fullProjectVersion
+    gameVersions = minecraftVersions
+    loaders = listOf("fabric")
+    curseEnvironment = "both" // or "server", "client"
 
     artifact.set(tasks.remapJar)
 
