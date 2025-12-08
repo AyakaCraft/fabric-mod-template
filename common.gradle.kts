@@ -21,7 +21,7 @@ plugins {
     // https://github.com/firstdarkdev/modpublisher
     id("com.hypherionmc.modutils.modpublisher") version ("2.1.8")
 
-    id("maven-publish")
+    `maven-publish`
     idea
 }
 
