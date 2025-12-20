@@ -3,7 +3,7 @@ import nl.javadude.gradle.plugins.license.header.HeaderDefinitionBuilder
 import java.util.Calendar
 
 plugins {
-    id("net.fabricmc.fabric-loom") version ("1.14-SNAPSHOT")
+    id("net.fabricmc.fabric-loom-remap") version ("1.14-SNAPSHOT")
 
     // https://github.com/ReplayMod/preprocessor
     // https://github.com/Fallen-Breath/preprocessor
@@ -88,7 +88,7 @@ idea {
 
 // https://github.com/FabricMC/fabric-loader/issues/783
 configurations {
-    runtimeOnly {
+    modRuntimeOnly {
         exclude(group = "net.fabricmc", module = "fabric-loader")
     }
 }
@@ -96,10 +96,11 @@ configurations {
 dependencies {
     // loom
     minecraft("com.mojang:minecraft:${minecraftVersion}")
+    mappings(loom.officialMojangMappings())
 
     // fabric
-    implementation("net.fabricmc:fabric-loader:${properties["loader_version"]}")
-    // implementation("net.fabricmc.fabric-api:fabric-api:${properties["fabric_api_version"]}")
+    modImplementation("net.fabricmc:fabric-loader:${properties["loader_version"]}")
+    // modImplementation("net.fabricmc.fabric-api:fabric-api:${properties["fabric_api_version"]}")
 
     if (!ci) {
         // Runtime only mods here
@@ -111,7 +112,15 @@ dependencies {
 
 val mixinConfigPath = "modid.mixins.json"
 val langDir = "assets/modid/lang"
-val javaCompatibility = JavaVersion.VERSION_25
+val javaCompatibility = if (mcVersionNumber >= 12005) {
+    JavaVersion.VERSION_21
+} else if (mcVersionNumber >= 11800) {
+    JavaVersion.VERSION_17
+} else if (mcVersionNumber >= 11700) {
+    JavaVersion.VERSION_16
+} else {
+    JavaVersion.VERSION_1_8
+}
 val mixinCompatibility = javaCompatibility
 
 loom {
@@ -158,13 +167,11 @@ tasks.withType<ShadowJar> {
     relocationPrefix = "modid.libs"
 }
 
-tasks.shadowJar {
-    archiveClassifier = ""
+tasks.remapJar {
+    dependsOn(tasks.shadowJar)
+    mustRunAfter(tasks.shadowJar)
+    inputFile = tasks.shadowJar.get().archiveFile
 }
-tasks.jar {
-    archiveClassifier = "dev"  // not shadowed version
-}
-tasks["assemble"].dependsOn(tasks.shadowJar)
 
 val modVersion = properties["mod_version"].toString()
 
@@ -233,6 +240,10 @@ tasks.processResources {
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
     options.compilerArgs.addAll(listOf("-Xlint:deprecation", "-Xlint:unchecked"))
+    if (javaCompatibility <= JavaVersion.VERSION_1_8) {
+        // suppressed "source/target value 8 is obsolete and will be removed in a future release"
+        options.compilerArgs.add("-Xlint:-options")
+    }
 }
 
 java {
@@ -314,7 +325,11 @@ publisher {
     loaders = listOf("fabric")
     curseEnvironment = "both" // or "server", "client"
 
-    artifact.set(tasks.shadowJar)
+    artifact.set(tasks.remapJar)
+
+    if (mcVersionNumber < 11700) {
+        setJavaVersions(JavaVersion.VERSION_1_8)
+    }
 
     github {
         repo(System.getenv("REPO"))
