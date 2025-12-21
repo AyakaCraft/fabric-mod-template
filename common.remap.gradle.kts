@@ -69,6 +69,13 @@ repositories {
         }
     }
     maven {
+        name = "ParchmentMC"
+        url = uri("https://maven.parchmentmc.org")
+        content {
+            includeGroup("org.parchmentmc.data")
+        }
+    }
+    maven {
         name = "Jitpack"
         url = uri("https://jitpack.io")
     }
@@ -96,7 +103,15 @@ configurations {
 dependencies {
     // loom
     minecraft("com.mojang:minecraft:${minecraftVersion}")
-    mappings(loom.officialMojangMappings())
+    val parchment = properties["parchment"]
+    if (parchment != null) {
+        mappings(loom.layered {
+            officialMojangMappings()
+            parchment("org.parchmentmc.data:parchment-$minecraftVersion:${properties["parchment"]}@zip")
+        })
+    } else {
+        mappings(loom.officialMojangMappings())
+    }
 
     // fabric
     modImplementation("net.fabricmc:fabric-loader:${properties["loader_version"]}")

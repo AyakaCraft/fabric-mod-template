@@ -158,13 +158,12 @@ tasks.withType<ShadowJar> {
     relocationPrefix = "modid.libs"
 }
 
-tasks.shadowJar {
-    archiveClassifier = ""
-}
 tasks.jar {
-    archiveClassifier = "dev"  // not shadowed version
+    dependsOn(tasks.shadowJar)
+    mustRunAfter(tasks.shadowJar)
+    from(zipTree(tasks.shadowJar.get().archiveFile))
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
-tasks["assemble"].dependsOn(tasks.shadowJar)
 
 val modVersion = properties["mod_version"].toString()
 
@@ -314,7 +313,7 @@ publisher {
     loaders = listOf("fabric")
     curseEnvironment = "both" // or "server", "client"
 
-    artifact.set(tasks.shadowJar)
+    artifact.set(tasks.jar)
 
     github {
         repo(System.getenv("REPO"))
