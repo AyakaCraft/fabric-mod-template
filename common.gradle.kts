@@ -158,13 +158,6 @@ tasks.withType<ShadowJar> {
     relocationPrefix = "modid.libs"
 }
 
-tasks.jar {
-    dependsOn(tasks.shadowJar)
-    mustRunAfter(tasks.shadowJar)
-    from(zipTree(tasks.shadowJar.get().archiveFile))
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-}
-
 val modVersion = properties["mod_version"].toString()
 
 var modVersionSuffix = ""
@@ -242,6 +235,11 @@ java {
 }
 
 tasks.jar {
+    dependsOn(tasks.shadowJar)
+    mustRunAfter(tasks.shadowJar)
+    from(zipTree(tasks.shadowJar.get().archiveFile))
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
     inputs.property("archives_base_name", properties["archives_base_name"])
     from(rootProject.file("LICENSE")) {
         rename { "${it}_${properties["archives_base_name"]}" }
