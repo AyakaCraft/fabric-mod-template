@@ -159,6 +159,8 @@ loom {
             ideConfigGenerated(false)
         }
     }
+
+    mixin.useLegacyMixinAp = true
 }
 
 preprocess {
