@@ -3,7 +3,7 @@ import nl.javadude.gradle.plugins.license.header.HeaderDefinitionBuilder
 import java.util.Calendar
 
 plugins {
-    id("net.fabricmc.fabric-loom-remap") version ("1.15.0-alpha.16")
+    id("net.fabricmc.fabric-loom-remap") version ("1.15.0-alpha.22")
 
     // https://github.com/ReplayMod/preprocessor
     // https://github.com/Fallen-Breath/preprocessor
@@ -107,7 +107,7 @@ dependencies {
     if (parchment != null) {
         mappings(loom.layered {
             officialMojangMappings()
-            parchment("org.parchmentmc.data:parchment-$minecraftVersion:${properties["parchment"]}@zip")
+            parchment("org.parchmentmc.data:parchment-$minecraftVersion:$parchment@zip")
         })
     } else {
         mappings(loom.officialMojangMappings())
