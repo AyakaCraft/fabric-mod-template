@@ -2,15 +2,15 @@ import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 
 plugins {
-    id("net.fabricmc.fabric-loom-remap") version ("1.15.0-alpha.22") apply (false)
-    id("net.fabricmc.fabric-loom") version ("1.15.0-alpha.22") apply (false)
+    id("net.fabricmc.fabric-loom-remap") version ("1.15-SNAPSHOT") apply (false)
+    id("net.fabricmc.fabric-loom") version ("1.15-SNAPSHOT") apply (false)
 
     // https://github.com/ReplayMod/preprocessor
     // https://github.com/Fallen-Breath/preprocessor
     id("com.replaymod.preprocess") version ("c5abb4fb12")
 
     // https://github.com/GradleUp/shadow
-    id("com.gradleup.shadow") version ("9.3.0") apply (false)
+    id("com.gradleup.shadow") version ("9.4.1") apply (false)
 
     // https://github.com/hierynomus/license-gradle-plugin
     id("com.github.hierynomus.license") version ("0.16.1") apply (false)
@@ -19,7 +19,7 @@ plugins {
     id("me.fallenbreath.yamlang") version ("1.5.0") apply (false)
 
     // https://github.com/firstdarkdev/modpublisher
-    id("com.hypherionmc.modutils.modpublisher") version ("2.1.8") apply (false)
+    id("com.hypherionmc.modutils.modpublisher") version ("2.2.1") apply (false)
 
     `maven-publish`
     idea
